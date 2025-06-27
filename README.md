@@ -1,147 +1,181 @@
 # Formal-Proof-of-the-Collatz-Conjecture
 
-# Формальное доказательство гипотезы Коллатца через инвариантность конца и явление структурной числовой симметрии (СЧС)
-# Автор : Ющенко Михаил Юрьевич
+# Formal Proof of the Collatz Conjecture via End-Invariance and the Phenomenon of Structural Numerical Symmetry (SNS)
+# Author: Yushchenko Mikhail Yuryevich
+# Date: 2025
 
-Дата : 2025 год
+[Published at:](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/edit/main/README.md)
 
-[Опубликовано :](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture)
+**Abstract:**
 
-**Аннотация:**
+This paper presents a novel method for proving the Collatz Conjecture , based on the phenomenon of Structural Numerical Symmetry (SNS) described here , which involves the invariance of the last digit of a number under certain transformations. It is proven that for any natural number N>0 , when applying the Collatz transformations, the last digit of the number inevitably converges to the closed cycle 4 → 2 → 1 . This eliminates the possibility of other cycles or divergence to infinity, thereby proving the Collatz Conjecture .
 
-В данной работе представлена новая методика доказательства гипотезы Коллатца, основанная [на явлении структурной числовой симметрии (СЧС)](https://github.com/Misha0966/New-project), включающем инвариантность последней цифры числа при определённого рода преобразованиях. Доказано, что для любого натурального числа N>0 , при применении преобразований Коллатца, последняя цифра числа неизбежно движется к замкнутому циклу 4→2→1 . Это исключает возможность существования других циклов и ухода в бесконечность, тем самым доказывая гипотезу Коллатца. 
+**Collatz Conjecture:**
 
-Гипотеза Коллатца:
+For any natural number N>0 , if the following operations are repeated:
 
-Для любого натурального числа N>0 , если повторять следующие операции:
+- If N is even: N←N/2
+- If N is odd: N←3N+1
+- Then the sequence will always eventually reach the value 1 .
 
-- Если N чётное: N←N/2
-- Если N нечётное: N←3N+1
-- То последовательность всегда достигает значения 1 .
+Main Idea of the Proof:
 
-**Основная идея доказательства:**
+I use a [key invariant from the Structural Numerical Symmetry (SNS) algorithm:](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/Formal%20Proof%20of%20Structural%20Numerical%20Symmetry%20(SNS).md)
 
-Я использую [ключевой инвариант из алгоритма структурной числовой симметрии (СЧС):]([https://github.com/Misha0966/New-project/blob/main/%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%B4%D0%BE%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D1%82%D0%B2%D0%BE%20%D0%A1%D0%A7%D0%A1.md))
+For any natural number N≥1 , split into m≥2 parts and multiplied by a natural number k , the last digit of PQ always matches the last digit of the classical product NK=N⋅k .
 
-Для любого натурального числа N≥1 , разбитого на m≥2 частей и умноженного на натуральное число k , последняя цифра PQ всегда совпадает с последней цифрой классического произведения NK=N⋅k . 
+This allows us to show that, under any transformation in the Collatz Conjecture, the last digit of the number converges toward a specific set of values that ultimately lead to termination of the algorithm — specifically, entering the cycle 4 → 2 → 1 .
 
-Это позволяет показать, что при любых преобразованиях в гипотезе Коллатца последняя цифра числа движется к определённому множеству значений , которые ведут к завершению алгоритма.
+Formulation of the Collatz Convergence Theorem via SNS (Structural Numerical Symmetry)
 
-**Формулировка теоремы о сходимости Коллатца через СЧС**
+**Theorem:**
 
-Теорема:
+For any natural number N>0 , when applying the Collatz transformations:
 
-Для любого натурального числа N>0 , при применении преобразований Коллатца:
+∃t∈ℕ, f^t(N)=1
 
-∃t∈N ,  f^t(N) = 1
+**This notation means:**
 
-**Доказательство:**
+For any N>0 , after some finite number of steps t , the function f , representing one Collatz step, will necessarily lead to the number 1 .
 
-***Классификация чисел по последней цифре***
+## Proof:
 
-Каждое число N можно классифицировать по его последней цифре:
+Classification of Numbers by Last Digit
 
-d = N,  mod10,   d∈{0,1,2,...,9}
+Each number N can be classified by its last digit :
 
-Рассмотрим поведение последней цифры при каждом шаге Коллатца:
+d=Nmod10,   d∈{0,1,2,...,9}
 
-|Последняя цифра D |После деления на 2(чётное)|После 3N + 1(Нечётное)|
-|------------------|--------------------------|----------------------|
-| 0 | → 0 или 5 | → 1 |
+This notation means:
+
+Any natural number N has a last digit equal to:
+
+d=Nmod10,  d∈{0,1,2,...,9}
+
+**This classification is needed in order to understand the behavior of a number under Collatz transformations:**
+
+- If d∈{0,2,4,6,8}⇒N is even
+- If d∈{1,3,5,7,9}⇒N is odd
+- The value of Nmod10 determines which rule to apply.
+
+After that, f(N)mod10 is also uniquely determined.
+
+This means the last digit completely determines which operation will be applied next in the Collatz sequence!
+
+Let's examine how the last digit behaves at each step of the Collatz process:
+
+This is a key insight: since the next operation (divide by 2 or apply 3N+1 ) depends only on whether the number is even or odd — and this can be determined solely from the last digit — we can model the behavior of the entire sequence based on transitions between last digits:
+
+|Last Digit D|After division by 2 (even)|After applying 3N + 1 (for odd numbers)|
+|------------|--------------------------|---------------------------------------|
+| 0 | → 0 or 5 | → 1 |
 | 1 | — | → 4 |
 | 2 | → 1 | — |
 | 3 | — | → 0 |
 | 4 | → 2 | — |
-| 5 | → 7 или 2 | → 6 |
+| 5 | → 7 or 2 | → 6 |
 | 6 | → 3 | — |
 | 7 | — | → 2 |
 | 8 | → 4 | — |
 | 9 | — | → 8 |
 
-Все пути ведут к конечному множеству Dfinal = {1,2,4} , которое образует цикл:
+All paths lead to the final set Dfinal = {1, 2, 4}, which forms the cycle:
 
 4→2→1
 
-**Лемма 1. Инвариантность конца при преобразованиях Коллатца**
+**Lemma 1. End Invariance under Collatz Transformations**
 
-Пусть f(N) — функция, представляющая один шаг Коллатца:
+Let f(N) be the function representing one step of the Collatz transformation:
+
 
 f(N) = { N/2, 3N+1 }
-​
-  
-если N чётное
-если N нечётное
-​
- 
-Тогда:
+- if N is even
+- if N is odd
+​​
+Then:
 
 last_digit(f(N))∈{0,1,2,4,6,8}
 
-Это следует из таблицы выше и свойств десятичной системы.
+This means that, at any step of the Collatz process, the last digit of f(N) falls into one of these values only :
 
-**Лемма 2. Ни одно число не может расти бесконечно**
+last_digit(f(N))∈{0,1,2,4,6,8}
 
-Предположим, что существует N , для которого последовательность никогда не достигает 1 , а вместо этого уходит в бесконечность.
+This follows from the table above and the properties of the decimal number system.
 
-Но тогда последняя цифра N должна бесконечно меняться без возврата к 1 .
 
-Однако, согласно таблице выше, последняя цифра не может быть произвольной , она движется по строгим правилам , и никогда не порождает бесконечный рост без попадания в цикл 4→2→1 .
+**Lemma 2. No Number Can Grow Infinitely**
 
-Таким образом, предположение неверно.
+Suppose there exists an N for which the sequence never reaches 1, but instead grows infinitely.
 
-**Теорема о сходимости Коллатца через инвариантность конца**
+Then the last digit of N must change infinitely without ever returning to 1.
 
-Теорема:
+However, according to the table above, the last digit cannot be arbitrary — it follows strict rules, and never produces infinite growth without entering the cycle 4 → 2 → 1 .
 
-Для любого натурального числа N>0 , при применении преобразований Коллатца:
+Therefore, the assumption is false.
 
-∃t∈N,   f^t(N)=1
+Theorem of Collatz Convergence via End Invariance
 
-Доказательство:
+***Theorem:**
 
-**Классификация чисел по последней цифре**
+For any natural number N>0 , when applying the Collatz transformations:
 
-Каждое число N можно классифицировать по его последней цифре d=Nmod10 , где d∈{0,1,2,...,9} .
+∃t∈ℕ, f^t(N)=1
 
-**Поведение последней цифры при преобразованиях Коллатца**
+The notation ∃t∈ ℕ, f^t(N)=1 means:
 
-Как показано выше, каждая последняя цифра либо:
+There exists some step t at which the number N becomes equal to 1.
 
-Ведёт к уменьшению числа,
+Explanation:
 
-Либо приводит к переходу в другую группу,
+f^t(N) denotes the t -fold application of the function f to the number N .
 
-Но ни одна группа не уходит в бесконечность без попадания в цикл 4→2→1 .
+**Proof:**
 
-**Инвариантность конца и сходимость**
+Classification of Numbers by Last Digit
 
-Из доказательства СЧС:
+Each number N can be classified by its last digit :
+
+d=Nmod10,  d∈{0,1,2,...,9}
+
+Behavior of the Last Digit Under Collatz Transformations
+
+As shown earlier, each last digit either:
+
+Causes the number to decrease,
+
+Or leads to a transition into another group,
+
+But no group escapes to infinity without entering the cycle 4 → 2 → 1 .
+
+End Invariance and Convergence
+[From the SNS proof:](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/Formal%20Proof%20of%20Structural%20Numerical%20Symmetry%20(SNS).md)
 
 last_digit(PQ)=last_digit(NK)
 
-Аналогично, при каждом шаге Коллатца:
+Similarly, at every step of the Collatz process:
 
 last_digit(f(N))∈{0,1,2,4,6,8}
 
-Это значит, что последняя цифра не может быть произвольной , она неизбежно движется к замкнутому циклу 4→2→1 .
+This means that the last digit cannot be arbitrary — it inevitably moves toward the closed cycle 4 → 2 → 1 .
 
-**Отсутствие других циклов**
+Absence of Other Cycles
 
-На основе эмпирических данных и теоретических исследований известно, что:
+Based on empirical data and theoretical analysis, it is known that:
 
-- Нет других коротких циклов, кроме 4→2→1
-- Нет монотонно растущих последовательностей
-- Таким образом, ни одно число не может расти бесконечно .
+- There are no other short cycles besides 4 → 2 → 1
+- There are no monotonically increasing sequences
+- Therefore, no number can grow infinitely.
 
-**Вывод**
+**Conclusion:**
 
-Для любого натурального числа N>0 , при применении преобразований Коллатца: 
+For any natural number N>0 , when applying the Collatz transformations:
 
-- Последняя цифра числа не может быть произвольной.
-- Она движется к конечному множеству {1,2,4} .
-- Эти значения образуют цикл 4→2→1 .
-- Нет других циклов и нет возможности ухода в бесконечность.
+The last digit of the number cannot be arbitrary.
 
-***Следовательно, любое число N рано или поздно достигает 1 .***
+It converges to the finite set {1, 2, 4} .
 
-# Что и требовалось доказать!!!
+- These values form the cycle 4 → 2 → 1 .
+- There are no other cycles , and there is no possibility of divergence to infinity .
+- Therefore, any number N will eventually reach 1.
+
+# Which was to be proved!!!
