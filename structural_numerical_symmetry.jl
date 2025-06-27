@@ -1,186 +1,186 @@
-using Printf # Подключает модуль для форматированного вывода (например, @printf)
-using CSV # Подключает библиотеку для работы с CSV-файлами
-using DataFrames # Подключает тип данных DataFrame для табличного хранения результатов
-using Base.Threads # Включает поддержку многопоточности
-using ProgressMeter # Позволяет отображать прогресс выполнения циклов
+using Printf # Imports the module for formatted output (e.g., @printf)
+using CSV # Imports library for working with CSV files
+using DataFrames # Imports DataFrame type for tabular storage of results
+using Base.Threads # Enables multithreading support
+using ProgressMeter # Allows displaying progress of loops
 
-# Функция разбивает число N на m частей максимально близких по длине
+# Function splits number N into m parts as evenly as possible
 function split_number_str(N::Integer, m::Integer)
-s = string(N)  # Преобразует число N в строку
+s = string(N)  # Converts number N to a string
 
-if N < 10 # Если число меньше 10 — дополняем ведущими нулями до длины m
-s = lpad(s, m, '0')  # Добавляем слева нули до длины m
+if N < 10 # If number is less than 10 — pad with leading zeros up to length m
+s = lpad(s, m, '0')  # Add leading zeros to make length m
 end
 
-len = length(s)  # Определяем общую длину строки
-base_len = div(len, m)  # Базовая длина части
-remainder = len % m  # Остаток при делении — сколько частей будут длиннее на 1 символ
+len = length(s)  # Determine total length of the string
+base_len = div(len, m)  # Base length per part
+remainder = len % m  # Remainder — how many parts will be longer by 1 character
 
-parts = String[]  # Массив для хранения частей числа
-idx = 1  # Текущая позиция в строке
+parts = String[]  # Array to store parts of the number
+idx = 1  # Current position in the string
 
-for i in 1:m  # Цикл по количеству частей
-current_len = base_len + (i <= remainder ? 1 : 0)  # Вычисляем длину текущей части
-push!(parts, s[idx:idx+current_len-1])  # Добавляем часть в массив
-idx += current_len  # Сдвигаем индекс начала следующей части
+for i in 1:m  # Loop over number of parts
+current_len = base_len + (i <= remainder ? 1 : 0)  # Calculate length of current part
+push!(parts, s[idx:idx+current_len-1])  # Add part to array
+idx += current_len  # Move index to start of next part
 end
 
-return parts  # Возвращаем массив частей числа
+return parts  # Return array of number parts
 end
 
-# Умножает часть числа, сохраняя его длину
+# Multiplies a string part preserving its original length
 function multiply_preserve_length(part::String, k::Integer)
-num = parse(BigInt, part) * k  # Преобразуем часть в число и умножаем на k
-result = string(num)  # Обратно в строку
-return lpad(result, length(part), '0')  # Сохраняем исходную длину, добавляя нули слева
+num = parse(BigInt, part) * k  # Convert part to number and multiply by k
+result = string(num)  # Convert back to string
+return lpad(result, length(part), '0')  # Preserve original length with leading zeros
 end
 
-# Удаляет ведущие нули из строки
+# Removes leading zeros from a string
 function remove_leading_zeros(s::String)
-if all(c -> c == '0', s)  # Если вся строка состоит из нулей
-return "0"  # Возвращаем "0"
+if all(c -> c == '0', s)  # If entire string is zeros
+return "0"  # Return "0"
 else
-idx = findfirst(c -> c != '0', s)  # Находим первый не-нулевой символ
-return s[idx:end]  # Возвращаем строку без ведущих нулей
+idx = findfirst(c -> c != '0', s)  # Find first non-zero character
+return s[idx:end]  # Return string without leading zeros
 end
 end
 
-# Сравнивает PQ и NK по началу и концу
+# Compares PQ and NK by beginning and end
 function compare_pq_nk(pq::String, nk::String)
-if pq == nk  # Полное совпадение
-return "✅ Полное совпадение"
+if pq == nk  # Full match
+return "✅ Full match"
 end
 
-min_len = min(length(pq), length(nk))  # Минимальная длина строк
-prefix_match = 0  # Счётчик совпадений спереди
-for i in 1:min_len  # Цикл сравнения символов с начала
-pq[i] == nk[i] ? prefix_match += 1 : break  # Увеличиваем счётчик или выходим
+min_len = min(length(pq), length(nk))  # Minimum length of strings
+prefix_match = 0  # Counter for front matches
+for i in 1:min_len  # Loop comparing characters from the front
+pq[i] == nk[i] ? prefix_match += 1 : break  # Increment or exit
 end
 
-suffix_match = 0  # Счётчик совпадений с конца
-for i in 1:min_len  # Цикл сравнения символов с конца
-pq[end - i + 1] == nk[end - i + 1] ? suffix_match += 1 : break  # Увеличиваем или выходим
+suffix_match = 0  # Counter for end matches
+for i in 1:min_len  # Loop comparing characters from the end
+pq[end - i + 1] == nk[end - i + 1] ? suffix_match += 1 : break  # Increment or exit
 end
 
-if prefix_match > 0 && suffix_match > 0  # Совпадают начало и конец
-return "🔄 Совпадают начало и конец"
-elseif prefix_match > 0  # Только начало
-return "🔄 Совпадает только начало"
-elseif suffix_match > 0  # Только конец
-return "🔄 Совпадает только конец"
-else  # Нет совпадений
-return "❌ Нет совпадений"
+if prefix_match > 0 && suffix_match > 0  # Both start and end match
+return "🔄 Start and end match"
+elseif prefix_match > 0  # Only start matches
+return "🔄 Only start matches"
+elseif suffix_match > 0  # Only end matches
+return "🔄 Only end matches"
+else  # No matches
+return "❌ No match"
 end
 end
 
-# Проверка алгоритма для одного числа
-function check_algoritm(N::Integer, m::Integer, k::Integer)
-N_str = string(N)  # Преобразуем N в строку
-nk_str = string(N * k)  # Умножаем N на k и преобразуем в строку
+# Checks algorithm for a single number
+function check_algorithm(N::Integer, m::Integer, k::Integer)
+N_str = string(N)  # Convert N to string
+nk_str = string(N * k)  # Multiply N by k and convert to string
 
-parts_str = split_number_str(N, m)  # Разбиваем N на m частей
-multiplied_parts_str = [multiply_preserve_length(p, k) for p in parts_str]  # Умножаем каждую часть
-pq_str = join(multiplied_parts_str)  # Объединяем части обратно
+parts_str = split_number_str(N, m)  # Split N into m parts
+multiplied_parts_str = [multiply_preserve_length(p, k) for p in parts_str]  # Multiply each part
+pq_str = join(multiplied_parts_str)  # Join parts back together
 
-# Удаление ведущих нулей перед сравнением
-pq_clean = remove_leading_zeros(pq_str)  # Чистим PQ
-nk_clean = remove_leading_zeros(nk_str)  # Чистим NK
+# Remove leading zeros before comparison
+pq_clean = remove_leading_zeros(pq_str)  # Clean PQ
+nk_clean = remove_leading_zeros(nk_str)  # Clean NK
 
-result = compare_pq_nk(pq_clean, nk_clean)  # Сравниваем PQ и NK
+result = compare_pq_nk(pq_clean, nk_clean)  # Compare PQ and NK
 
-return (  # Возвращаем именованный кортеж (NamedTuple) с результатами проверки СЧС
-N = N,  # Исходное число N
-m = m,  # Число частей, на которое было разбито N
-k = k,  # Множитель, на который умножались части числа
-parts = string(parts_str),  # Строковое представление разбиения числа на части
-multiplied_parts = string(multiplied_parts_str),  # Строковое представление умноженных частей
-PQ = pq_clean,  # Результат конкатенации умноженных частей (очищенный от ведущих нулей)
-NK = nk_clean,  # Результат умножения всего числа на k (N * k) (очищенный от ведущих нулей)
-result = result  # Результат сравнения строк PQ и NK (полное совпадение, начало, конец и т.д.)
-)  # Итоговый NamedTuple содержит все данные по проверке для одного числа N
+return (  # Return named tuple with test results
+N = N,  # Original number N
+m = m,  # Number of parts N was divided into
+k = k,  # Multiplier used on each part
+parts = string(parts_str),  # String representation of number split
+multiplied_parts = string(multiplied_parts_str),  # String representation of multiplied parts
+PQ = pq_clean,  # Concatenated result after multiplication (cleaned of leading zeros)
+NK = nk_clean,  # Result of multiplying whole number by k (N * k) (cleaned)
+result = result  # Comparison result (full match, partial, etc.)
+    )  # Final NamedTuple contains all data for one number N
 end
 
-# Параллельная проверка диапазона чисел
+# Parallel testing over range of numbers
 function run_tests_parallel(start_N::Integer, stop_N::Integer, m::Integer, k::Integer)
-results_df = DataFrame(  # Создаём DataFrame для хранения результатов
-N = Int[], # Поле "N" — целые числа
-m = Int[], # Поле "m" — целые числа
-k = Int[], # Поле "k" — целые числа
-parts = String[], # Поле "parts" — строки (части исходного числа)
-multiplied_parts = String[], # Поле "multiplied_parts" — строки (умноженные части)
-PQ = String[], # Поле "PQ" — строка результата после умножения частей
-NK = String[], # Поле "NK" — строка N * k
-result = String[] # Поле "result" — строка с оценкой совпадения
-)
+results_df = DataFrame(  # Create DataFrame to store results
+N = Int[], # Field "N" — integers
+m = Int[], # Field "m" — integers
+k = Int[], # Field "k" — integers
+parts = String[], # Field "parts" — strings (split parts of original number)
+multiplied_parts = String[], # Field "multiplied_parts" — strings (multiplied parts)
+PQ = String[], # Field "PQ" — result string after part multiplication
+NK = String[], # Field "NK" — string N * k
+result = String[] # Field "result" — string describing match status
+    )
 
-count_full = Atomic{Int}(0)  # Счётчик полных совпадений
-count_partial_start = Atomic{Int}(0)  # Только начало
-count_partial_end = Atomic{Int}(0)  # Только конец
-count_partial_both = Atomic{Int}(0)  # И начало, и конец
-count_none = Atomic{Int}(0)  # Нет совпадений
+count_full = Atomic{Int}(0)  # Counter for full matches
+count_partial_start = Atomic{Int}(0)  # Only start matches
+count_partial_end = Atomic{Int}(0)  # Only end matches
+count_partial_both = Atomic{Int}(0)  # Both start and end matches
+count_none = Atomic{Int}(0)  # No matches
 
-@showprogress "🚀 Проверяем N ∈ [$start_N, $stop_N], m = $m, k = $k" for N in start_N:stop_N  # Отображаем прогресс
-res = check_algoritm(N, m, k)  # Выполняем проверку для конкретного N
+@showprogress "🚀 Testing N ∈ [$start_N, $stop_N], m = $m, k = $k" for N in start_N:stop_N  # Show progress
+res = check_algorithm(N, m, k)  # Run check for specific N
 
-Threads.atomic_add!(count_full, res.result == "✅ Полное совпадение" ? 1 : 0)  # Обновляем счётчики
-Threads.atomic_add!(count_partial_start, res.result == "🔄 Совпадает только начало" ? 1 : 0) # Увеличиваем счётчик частичных совпадений (только начало)
-Threads.atomic_add!(count_partial_end, res.result == "🔄 Совпадает только конец" ? 1 : 0) # Увеличиваем счётчик частичных совпадений (только конец)
-Threads.atomic_add!(count_partial_both, res.result == "🔄 Совпадают начало и конец" ? 1 : 0) # Увеличиваем счётчик частичных совпадений (начало и конец)
-Threads.atomic_add!(count_none, res.result == "❌ Нет совпадений" ? 1 : 0) # Увеличиваем счётчик случаев без совпадений
+Threads.atomic_add!(count_full, res.result == "✅ Full match" ? 1 : 0)  # Update counters
+Threads.atomic_add!(count_partial_start, res.result == "🔄 Only start matches" ? 1 : 0)
+Threads.atomic_add!(count_partial_end, res.result == "🔄 Only end matches" ? 1 : 0)
+Threads.atomic_add!(count_partial_both, res.result == "🔄 Start and end match" ? 1 : 0)
+Threads.atomic_add!(count_none, res.result == "❌ No match" ? 1 : 0)
 
-push!(results_df, [  # Добавляем результаты по текущему числу N в DataFrame
-res.N # Исходное число N
-res.m # Количество частей m
-res.k # Множитель k
-res.parts # Строковое представление разбиения на части
-res.multiplied_parts  # Строковое представление умноженных частей
-res.PQ # Результат PQ после объединения (очищенный)
-res.NK # Результат NK = N * k (очищенный)
-res.result # Результат сравнения: полное или частичное совпадение / нет
-])
+push!(results_df, [  # Add current N's results to DataFrame
+res.N # Original number N
+res.m # Number of parts m
+res.k # Multiplier k
+res.parts # String representation of split parts
+res.multiplied_parts  # String representation of multiplied parts
+res.PQ # PQ result after joining (cleaned)
+res.NK # NK = N * k (cleaned)
+res.result # Match result: full, partial, none
+        ])
+  end
+
+  full = count_full[]
+  partial_start = count_partial_start[]
+  partial_end = count_partial_end[]
+  partial_both = count_partial_both[]
+  none = count_none[]
+
+  println("\n💾 Saving results to CSV...") # Save statistics to file
+  CSV.write("results.csv", results_df)  # Write results table to CSV file
+
+  open("statistics.txt", "w") do io  # Open file for writing statistics
+  write(io, "📊 Structural Numerical Symmetry\n")
+  write(io, "=========================================\n")
+  write(io, "Range N: [$start_N, $stop_N]\n")
+  write(io, "Number of parts m = $m\n")
+  write(io, "Multiplier k = $k\n")
+  write(io, "-----------------------------------------\n")
+  write(io, "  ✅ Full matches: $full\n")
+  write(io, "  🔄 Start and end match: $partial_both\n")
+  write(io, "  🔄 Only start matches: $partial_start\n")
+  write(io, "  🔄 Only end matches: $partial_end\n")
+  write(io, "  ❌ No matches: $none\n")
+  write(io, "📄 Results for each number are in 'results.csv'\n")
+  end
+
+  println("\n📊 Summary statistics:") # Output stats to terminal
+  @printf("  ✅ Full matches: %d\n", full)
+  @printf("  🔄 Start and end match: %d\n", partial_both)
+  @printf("  🔄 Only start matches: %d\n", partial_start)
+  @printf("  🔄 Only end matches: %d\n", partial_end)
+  @printf("  ❌ No matches: %d\n", none)
+  @println("\n📄 Statistics saved to 'statistics.txt'")
+  @println("📄 Results saved to 'results.csv'")
+
+return results_df  # Return filled results DataFrame
 end
 
-full = count_full[] # Получаем финальное значение счётчика полных совпадений
-partial_start = count_partial_start[] # Получаем финальное значение счётчика совпадений только начала
-partial_end = count_partial_end[] # Получаем финальное значение счётчика совпадений только конца
-partial_both = count_partial_both[] # Получаем финальное значение счётчика совпадений начала и конца
-none = count_none[] # Получаем финальное значение счётчика отсутствия совпадений
+# User parameters
+start_N = 1 # Start of test range
+stop_N = 10000000 # End of test range
+m = 2 # Number of parts to split original number
+k = 7 # Multiplier applied to each part
 
-println("\n💾 Сохраняю результаты в CSV...") # Сохранение статистики в файл
-CSV.write("results.csv", results_df)  # Записываем таблицу результатов в файл CSV
-
-open("statistics.txt", "w") do io  # Открываем файл для записи статистики в режиме перезаписи
-write(io, "📊 Структурная числовая симметрия\n")
-write(io, "=========================================\n")
-write(io, "Диапазон N: [$start_N, $stop_N]\n")
-write(io, "Количество частей m = $m\n")
-write(io, "Множитель k = $k\n")
-write(io, "-----------------------------------------\n")
-write(io, "  ✅ Полных совпадений: $full\n")
-write(io, "  🔄 Совпадают начало и конец: $partial_both\n")
-write(io, "  🔄 Совпадает только начало: $partial_start\n")
-write(io, "  🔄 Совпадает только конец: $partial_end\n")
-write(io, "  ❌ Без совпадений: $none\n")
-write(io, "📄 Результаты по каждому числу — в 'results.csv'\n")
-end
-
-println("\n📊 Сводная статистика:") # Вывод статистики в терминал
-@printf("  ✅ Полных совпадений: %d\n", full) # Печатаем количество полных совпадений
-@printf("  🔄 Совпадают начало и конец: %d\n", partial_both) # Печатаем количество совпадений начала и конца
-@printf("  🔄 Совпадает только начало: %d\n", partial_start) # Печатаем количество совпадений только начала
-@printf("  🔄 Совпадает только конец: %d\n", partial_end) # Печатаем количество совпадений только конца
-@printf("  ❌ Без совпадений: %d\n", none) # Печатаем количество отсутствующих совпадений
-println("\n📄 Статистика сохранена в 'statistics.txt'") # Выводим в консоль сообщение о сохранении статистики
-println("📄 Результаты сохранены в 'results.csv'") # Выводим сообщение о сохранении результатов
-
-return results_df  # Возвращаем заполненную таблицу результатов (DataFrame)
-end
-
-# Пользовательские параметры
-start_N = 1 # Начальное число диапазона проверки
-stop_N = 10000000 # Конечное число диапазона проверки
-m = 2 # Число, на которое разбивается исходное число
-k = 7 # Множитель, на который умножаются части числа
-
-# Запуск тестов
-run_tests_parallel(start_N, stop_N, m, k)  # Вызываем основную функцию для параллельной проверки СЧС
+# Run tests
+run_tests_parallel(start_N, stop_N, m, k)  # Call main function to test SNS
