@@ -13,63 +13,128 @@ This document presents the formal proof of the phenomenon of Structural Numerica
 - m — number of parts (m ∈ ℕ, m ≥ 2)  
 - k — multiplication factor (k ∈ ℕ)
 
-The core idea is as follows:
+Suppose the last digit of PQ always matches that of NK .
 
-When any natural number N≥1 is split into m≥2 parts with nearly equal digit length and each part is multiplied by a constant integer k , then: 
+**Phenomenon of SNS (Structural Numerical Symmetry) :**
 
-The resulting concatenated string (\texttt{PQ}) matches or partially matches the classical multiplication result (\texttt{NK} = N×k )
-At least the last digit always remains unchanged
-No case of total mismatch has been found in millions of tests
+For any natural number **N ≥ 1** , divided into **m ≥ 2** natural parts, and then multiplied by a natural number **k** :
 
-### Definitions###
+- Either **PQ = NK** (exact match)
+- Or the beginning and end digits match
+- Or only the last digits match
+- But in no case is there a complete mismatch.
 
-1. N — **Natural Number**
+**Empirical conclusion:**
 
-Any positive integer N≥1. 
+Everywhere and always, for any type of matching, **the last digits always match .**
 
-2. m — **Number of Parts**
+**This is the key invariant of the phenomenon.**
 
-Number of segments to divide **N** . Must satisfy:
-- m ≥ 2
-- m ≤ number of digits in N
+Even in the range from 30 to 40 million, only full matches or matches of the beginning and end occur — but the end always matches regardless.
 
-3. **k — Multiplication Factor**
+**Important observation:**
 
-k — **any natural number**
+If the last digit always matches , then checking for agreement at the end is a necessary condition for all other types of matching to hold.
 
-4. **PQ — Concatenated Result**
+**Theorem on the Last Digit (Last Digit Invariance Theorem)**
 
-Each part of N is separately multiplied by k , and the results are joined as strings → PQ
+**Statement:**
 
-5. **NK — Classical Product**
+For any natural number **N≥1** , split into **m≥2** natural parts and then multiplied by a natural number **k** , the result of concatenating the multiplied parts as a string **PQ** always has the same last digit as the classical product **NK = N × k .**
 
-Standard multiplication: **NK = N × k**
+That is:
 
-**Example:**
+last_digit(PQ)=last_digit(NK)
 
-Let’s take:
+**Proof:**
 
-- N = 123456789
-- m = 3
-- k = 7
+Let N = A1, A2…Am
+​
+where **N** is a natural number represented as a string,
 
-Split **N** into parts:
+**A1, A2,…,Am** — its parts after splitting.
 
-parts_str = ["12", "34", "56"]
+When multiplying part-by-part and concatenating the results, we obtain:
 
-Multiply each part by k :
+PQ=string(A1 × k) + string(A2 × k)+ ... + string(Am × k)
 
-pq_parts = [multiply_preserve_length(p, k) for p in parts_str] => ["84", "238", "392"]
+Denote B = Am
+​
+where **B** is the last part of the original number.
 
-Join them:
+After multiplication:
 
-PQ = "84238392"
+Bk = B × k
 
-Compare with:
+Since the last digit of **PQ** is determined precisely by **Bk** , we have:
 
-NK = 123456789 × 7 = 864197523
+last_digit(PQ) = (B × k)mod10
 
-**Result:**
+Now consider the classical multiplication:
 
-Only the end digit 2 vs 3 seems different — but after cleaning leading zeros and comparing real ends:
+NK = N × k = (a × 10 + B) × k = a × 10 ×k + B × k
 
+The term a × 10 × k ends in zero, therefore:
+
+last_digit(NK) = (B × k)mod10 = last_digit(PQ)
+
+**Therefore:**
+
+For any natural number **N** and any natural number **k** :
+
+The last digit of **PQ** is always equal to the last digit of **N×K**
+
+Now let's return to the question of the impossibility of matching only by the beginning :
+
+Throughout all checks (between **PQ** and **N × k** ):
+
+- There were many cases of full match
+- Even more matches by beginning and end
+- Many matches by last digits only
+
+But not a single case of match only by the beginning
+
+This suggests that the end of the number is more stable and consistent than the beginning .
+
+Therefore, we can make the following emphasis:
+
+**The last digits remain invariant under the phenomenon of SNS (Structural Numerical Symmetry) .**
+
+The beginning of **PQ** and **NK** may differ, but the end never does .
+
+## Proof of Structural Numerical Symmetry via the Last Digit Invariance Theorem
+
+We can now make the following statement:
+
+Since the last digit of **PQ** always matches the last digit of **NK**,
+
+Then:
+
+**A match only by the beginning is impossible ,** because it would violate the invariance of the last digit.
+
+
+**All three types of matching:**
+
+- Full match
+- Match by beginning and end
+- Match by last digit only
+
+**Are derived from one fundamental fact: the last digit of a number is preserved after transformation , mathematically .**
+
+If:
+
+PQ = string(A1 × k) + string(A2 × k)+...+string(Am × k)
+
+NK = N × k
+
+And:
+
+last_digit(PQ) = last_digit(N × K)
+
+Then:
+
+A match only by the beginning is impossible .
+
+There will always be either a full match , or a match by the end , or a match by both .
+
+## Which was to be proved!
