@@ -1,3 +1,11 @@
+P.S. — Any copying or distribution without the direct consent of the author is strictly prohibited!
+
+[Link to the Qualified Electronic Signature](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/7dd7c846-e085-4aa1-86d6-275b2be92f6c.pdf.sig)
+
+[Link to the Full Project:](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/7dd7c846-e085-4aa1-86d6-275b2be92f6c.pdf)
+
+**WARNING**: Dear "someone out there" plagiarists and copy-pasters, I want to warn you that this work is protected by WIPO (World Intellectual Property Organization).
+
 # Formal-Proof-of-the-Collatz-Conjecture
 
 # Formal Proof of the Collatz Conjecture via End-Invariance and the Phenomenon of Structural Numerical Symmetry (SNS)
