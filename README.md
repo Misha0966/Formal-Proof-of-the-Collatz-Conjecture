@@ -34,13 +34,13 @@ https://misha0966.github.io/New-project/
 
 - LICENSE — Project license (All Rights Reserved ),  Enhanced Qualified Electronic Signature (EQES)
 
-This project is protected by an enhanced qualified electronic signature.
-
 ## 🛡 License
 
 The project is protected by copyright.
 All Rights Reserved — © Yushchenko Mikhail Yuryevich, 2025
 Use, copying, and modification of project materials are prohibited without written permission from the author.
+
+This project is protected by an enhanced qualified electronic signature.
 
 [Verification Link:](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/55232996-5675-4ffb-b092-fbb4f79652a2.pdf.sig)
 
