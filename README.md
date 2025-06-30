@@ -1,3 +1,11 @@
+P.S. — Any copying or distribution without the direct consent of the author is strictly prohibited!
+
+[Link to the Qualified Electronic Signature](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/55232996-5675-4ffb-b092-fbb4f79652a2.pdf.sig)
+
+[Link to the Full Project:](https://github.com/Misha0966/Formal-Proof-of-the-Collatz-Conjecture/blob/main/55232996-5675-4ffb-b092-fbb4f79652a2.pdf)
+
+**WARNING**: Dear "someone out there" plagiarists and copy-pasters, I want to warn you that this work is protected by WIPO (World Intellectual Property Organization).
+
 # Formal Proof of Structural Numerical Symmetry (SNS)
 ## Author: Mikhail Yushchenko
 ## Date: 2025
