@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://misha0966.github.io/Formal-Proof-of-the-Collatz-Conjecture
