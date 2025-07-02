@@ -50,7 +50,7 @@ last_digit(PQ)=last_digit(NK)
 
 Let N = A1, A2…Am
 ​
-where **N** is a natural number represented as a string,
+ where **N** is a natural number represented as a string,
 
 **A1, A2,…,Am** — its parts after splitting.
 
@@ -58,11 +58,11 @@ When multiplying part-by-part and concatenating the results, we obtain:
 
 PQ=string(A1 × k) + string(A2 × k)+ ... + string(Am × k)
 
-where **PQ** — the result of sequentially concatenating the multiplied parts into a single decimal number, after splitting the original natural number into segments.
+ where **PQ** — the result of sequentially concatenating the multiplied parts into a single decimal number, after splitting the original natural number into segments.
 
 Denote B = Am
 ​
-where **B** is the last part of the original number.
+ where **B** is the last part of the original number.
 
 After multiplication:
 
@@ -127,7 +127,7 @@ If:
 
 PQ = string(A1 × k) + string(A2 × k)+...+string(Am × k)
 
-where **PQ** — the result of sequentially concatenating the multiplied parts into a single decimal number, after splitting the original natural number into segments.
+ where **PQ** — the result of sequentially concatenating the multiplied parts into a single decimal number, after splitting the original natural number into segments.
 
 NK = N × k
 
