@@ -74,9 +74,9 @@ This is a key insight: since the next operation (divide by 2 or apply 3N+1 ) dep
 | 3 | — | → 0 |
 | 4 | → 2 or 7 | — |
 | 5 | — | → 6 |
-| 6 | → 3 | — |
+| 6 | → 3 or 8 | — |
 | 7 | — | → 2 |
-| 8 | → 4 | — |
+| 8 | → 4 or 9 | — |
 | 9 | — | → 8 |
 
 All paths lead to the final set Dfinal = {1, 2, 4}, which forms the cycle:
