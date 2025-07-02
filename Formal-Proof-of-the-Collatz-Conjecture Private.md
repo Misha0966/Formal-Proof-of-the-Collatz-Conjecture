@@ -72,7 +72,7 @@ This is a key insight: since the next operation (divide by 2 or apply 3N+1 ) dep
 | 1 | — | → 4 |
 | 2 | → 1 | — |
 | 3 | — | → 0 |
-| 4 | → 2 or 4 | — |
+| 4 | → 2 or 7 | — |
 | 5 | — | → 6 |
 | 6 | → 3 | — |
 | 7 | — | → 2 |
