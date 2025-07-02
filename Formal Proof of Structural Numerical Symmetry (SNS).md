@@ -62,6 +62,7 @@ PQ=string(A1 × k) + string(A2 × k)+ ... + string(Am × k)
 
 Denote B = Am
 ​
+
  where **B** is the last part of the original number.
 
 After multiplication:
@@ -127,6 +128,7 @@ If:
 
 PQ = string(A1 × k) + string(A2 × k)+...+string(Am × k)
 
+ 
  where **PQ** — the result of sequentially concatenating the multiplied parts into a single decimal number, after splitting the original natural number into segments.
 
 NK = N × k
